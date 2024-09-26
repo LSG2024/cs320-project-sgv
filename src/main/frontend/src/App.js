@@ -3,8 +3,8 @@ import './App.css'; // Import CSS for styling
 
 function App() {
     // State variables for first name, last name, and the message
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [firstName, setFirst] = useState('');
+    const [lastName, setLast] = useState('');
     const [message, setMessage] = useState('');
 
     // Function to handle the form submission and make the fetch request
@@ -31,13 +31,13 @@ function App() {
                     type="text"
                     placeholder="First Name"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)} // Update the state with input value
+                    onChange={(e) => setFirst(e.target.value)} // Update the state with input value
                 />
                 <input
                     type="text"
                     placeholder="Last Name"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)} // Update the state with input value
+                    onChange={(e) => setLast(e.target.value)} // Update the state with input value
                 />
                 <button type="submit">Submit</button>
             </form>
