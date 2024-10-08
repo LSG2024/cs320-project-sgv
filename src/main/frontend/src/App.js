@@ -11,12 +11,14 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Update the body to match the keys expected by the backend
         const response = await fetch("/hello/personalized", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ firstName, lastName }), // Send the first and last name from the inputs
+            // Use `first` and `last` to match backend expectations
+            body: JSON.stringify({ first: firstName, last: lastName }),
         });
 
         const text = await response.text();
