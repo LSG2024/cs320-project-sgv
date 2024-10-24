@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css'; // Import CSS for styling
+import {useNavigate} from "react-router-dom";
 
 function App() {
     // State variables for first name, last name, and the message
@@ -24,6 +25,10 @@ function App() {
         const text = await response.text();
         setMessage(text); // Set the personalized message received from the backend
     };
+    const navigate = useNavigate();
+    const navigateToPage2 = () => {
+        navigate('/Page2');
+    }
 
     return (
         <div className="app-container">
@@ -44,6 +49,7 @@ function App() {
                 <button type="submit">Submit</button>
             </form>
             <p>{message}</p> {/* Display the personalized message */}
+            <button onClick={navigateToPage2}>Page 2</button>
         </div>
     );
 }
