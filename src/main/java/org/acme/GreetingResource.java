@@ -39,6 +39,47 @@ public class GreetingResource {
         return "Hello " + name + "! Your name has been stored in the database.";
     }
 
+    // Read (Get by ID)
+    @GET
+    @Path("/user/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserName getUserNameById(@PathParam("id") Long id) {
+        UserName userName = UserName.findById(id);
+        if (userName == null) {
+            throw new WebApplicationException("UserName with id " + id + " does not exist.", 404);
+        }
+        return userName;
+    }
+
+    // Update (Put)
+    @PUT
+    @Path("/user/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public String updateUserName(@PathParam("id") Long id, UserName updatedUser) {
+        UserName existingUser = UserName.findById(id);
+        if (existingUser == null) {
+            throw new WebApplicationException("UserName with id " + id + " does not exist.", 404);
+        }
+        existingUser.name = updatedUser.name;
+        return "Updated UserName with id " + id + " to " + updatedUser.name;
+    }
+
+    // Delete (Delete by ID)
+    @DELETE
+    @Path("/user/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Transactional
+    public String deleteUserName(@PathParam("id") Long id) {
+        UserName userName = UserName.findById(id);
+        if (userName == null) {
+            throw new WebApplicationException("UserName with id " + id + " does not exist.", 404);
+        }
+        userName.delete();
+        return "UserName with id " + id + " has been deleted.";
+    }
+
     // Person class remains unchanged
     public static class Person {
         private String first;
