@@ -6,6 +6,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 @Path("/api")
 public class GreetingResource {
@@ -30,10 +32,13 @@ public class GreetingResource {
                     .build();
         }
 
-        UserName userName = new UserName(name);
+        // Use a default password or prompt for one as appropriate
+        String defaultPassword = BCrypt.hashpw("defaultPassword", BCrypt.gensalt());
+        UserName userName = new UserName(name, defaultPassword); // "defaultPassword" can be replaced with a desired value
         userName.persist();
         return Response.ok("Hello " + name + "! Your name has been stored in the database.").build();
     }
+
 
     // CRUD operations for Car
 
