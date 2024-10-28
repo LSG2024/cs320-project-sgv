@@ -6,15 +6,17 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.NamedQuery;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
-// Defines a named query to find all usernames
 @Entity
 @Table(name = "user_names")
 @NamedQuery(name = "UserName.findAll", query = "SELECT u FROM UserName u ORDER BY u.name")
 public class UserName extends PanacheEntity {
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Name cannot be blank")
     public String name;
 
     // Default constructor
