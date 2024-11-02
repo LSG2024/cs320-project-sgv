@@ -3,13 +3,12 @@ import './Login.css';
 
 const Login = () => {
     const [user, setUser] = useState({
-        name: '', // Change from "username" to "name" to match backend
+        name: '',
         password: ''
     });
     const [message, setMessage] = useState('');
-    const [isSignUp, setIsSignUp] = useState(false); // Toggle for login/sign-up
+    const [isSignUp, setIsSignUp] = useState(false);
 
-    // Handle input changes
     const handleChange = (e) => {
         setUser({
             ...user,
@@ -17,18 +16,18 @@ const Login = () => {
         });
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Form submission triggered");
 
         if (!user.name.trim() || !user.password.trim()) {
             setMessage("Username and password cannot be blank.");
+            console.log("Validation failed: Blank username or password");
             return;
         }
 
-        const apiUrl = process.env.NODE_ENV === 'development'
-            ? `/auth/${isSignUp ? 'signup' : 'login'}`
-            : `https://your-aws-url/auth/${isSignUp ? 'signup' : 'login'}`;
+        const apiUrl = `/auth/${isSignUp ? 'signup' : 'login'}`;
+        console.log("API URL:", apiUrl);
 
         try {
             const response = await fetch(apiUrl, {
@@ -38,6 +37,8 @@ const Login = () => {
                 },
                 body: JSON.stringify(user)
             });
+
+            console.log("Response status:", response.status);
 
             if (response.status === 409) {
                 setMessage(`Username "${user.name}" already exists. Please choose another one.`);
@@ -49,10 +50,12 @@ const Login = () => {
                 setMessage("An unexpected error occurred. Please try again later.");
             }
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error during login/signup:", error);
             setMessage("An error occurred while processing your request. Please try again later.");
         }
     };
+
+
 
     return (
         <div className="login-container">
@@ -62,7 +65,7 @@ const Login = () => {
                     <label>Username:</label>
                     <input
                         type="text"
-                        name="name" // Change from "username" to "name" to match backend
+                        name="name"
                         value={user.name}
                         onChange={handleChange}
                         placeholder="Enter your username"
@@ -89,3 +92,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

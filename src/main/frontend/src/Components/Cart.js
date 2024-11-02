@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Cart.css'; // Or wherever the CSS file is located
+import './Cart.css';
 
 const Cart = () => {
     const [cart, setCart] = useState([]);
@@ -8,7 +8,7 @@ const Cart = () => {
     useEffect(() => {
         const fetchCartItems = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/cart');
+                const response = await fetch('/api/cart');
                 const data = await response.json();
                 setCart(data);
                 calculateTotal(data);
@@ -27,17 +27,23 @@ const Cart = () => {
 
     const deleteFromCart = async (itemId) => {
         try {
-            await fetch(`http://localhost:8080/api/cart/${itemId}`, {
+            const response = await fetch(`/api/cart/${itemId}`, {
                 method: 'DELETE',
             });
-            const updatedCart = cart.filter(item => item.id !== itemId);
-            setCart(updatedCart);
-            calculateTotal(updatedCart);
-            alert("Item removed from cart!");
+
+            if (response.ok) {
+                const updatedCart = cart.filter(item => item.id !== itemId);
+                setCart(updatedCart); // Update state to refresh the cart view
+                alert("Item removed from cart!");
+            } else {
+                console.error("Failed to remove item from cart", response.status);
+                alert("Failed to remove item from cart.");
+            }
         } catch (error) {
             console.error("Error deleting item from cart:", error);
         }
     };
+
 
     return (
         <div className="cart-container">
@@ -70,5 +76,7 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
 
 
