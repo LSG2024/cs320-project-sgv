@@ -3,18 +3,28 @@ import './Home.css';
 
 const Home = () => {
     useEffect(() => {
+        // Function to handle scroll events
         const handleScroll = () => {
+            console.log("Scroll event triggered");
             const container = document.querySelector('.home-container');
             if (window.scrollY > 50) {
+                console.log("Adding 'scrolled' class");
                 container.classList.add('scrolled');
             } else {
+                console.log("Removing 'scrolled' class");
                 container.classList.remove('scrolled');
             }
         };
 
+
+        // Add the scroll event listener to the window
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []); // Empty dependency array means this runs once when the component mounts
 
     return (
         <div className="home-container">

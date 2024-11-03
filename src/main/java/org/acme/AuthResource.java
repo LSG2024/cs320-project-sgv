@@ -8,6 +8,10 @@ import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
 import org.jboss.logging.Logger;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 @Path("/auth")
 public class AuthResource {
 
@@ -64,4 +68,20 @@ public class AuthResource {
 
         return Response.ok("Login successful!").build();
     }
+
+    @GET
+    @Path("/home-image")
+    @Produces("image/png")
+    public Response getHomeImage() {
+        try {
+            byte[] imageData = Files.readAllBytes(Paths.get("/Users/luisgarcia/Downloads/cs320-project-sgv/src/main/resources/META-INF/resources/Assets/Home.png"));
+            return Response.ok(imageData).build();
+        } catch (IOException e) {
+            LOGGER.error("Image file not found", e);
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Image file not found")
+                    .build();
+        }
+    }
+
 }
